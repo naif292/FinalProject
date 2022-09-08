@@ -1,0 +1,168 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<style>
+        .center1 {
+
+width: 20%;
+height: 20%;
+
+}
+</style>
+<head>
+
+    <title>Auctions</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    
+    <h1>Auctions</h1>
+    <div>
+        Signed as <strong> <%= username %></strong>
+
+    </div>
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link" href="http://localhost:3012/dashboard">Active Listings</a>
+        </li>
+
+        <li>
+            <a class="nav-link" href="http://localhost:3012/list">Create Listing</a>
+        </li>
+
+
+        <li>
+            <a class="nav-link" href="http://localhost:3012/closed">Closed</a>
+        </li>
+
+
+        <li class="nav-item dropdown">
+
+   
+        <li class="nav-item">
+            <a class="nav-link" href="http://localhost:3012/">Log In</a>
+        </li>
+    
+        <li class="nav-item">
+
+        </li>
+    </ul>
+    <% for (var i = 0; i < itemes.length; i++) { %>
+    <div style="display: flex;justify-content: center;align-items: center; ">
+        <div style="display: inline-block;">
+        
+          
+            <img src="<%= itemes[i].imagUrl%>" style="width: 300px;height: 300px;">
+
+            <h3>Title: <a href="http://localhost:3012/itemes/<%= itemes[i].iteme%>"><%= itemes[i].iteme %></a> </h3>
+            
+   
+           
+            <h4>Price: <%= itemes[i].price %>$</h4>
+            <h5>Description:  <%= itemes[i].description %></h5>
+   
+        </div>
+       
+
+    </div>
+
+
+    <% } %>
+     </div>
+     <div style="display: flex;justify-content: left;align-items: left;margin-left: 20px; ">
+      
+     <h6>Highest Bid:<%= highBid[0].bidamount    %></h6>
+  
+     </div>
+     <div style="display: flex;justify-content: left;align-items: left;margin-left: 20px; ">
+       
+        <div style="display: inline-block;">
+         
+            <% for (var x = 0; x < itemes.length; x++) { %>
+         <form action="/placbid" method="POST">
+          
+             <h6></h6>
+            
+             <input type="number" required="True" name="bid">
+          
+             <input type="hidden" name="commenttitle" value="<%= itemes[x].iteme %>">
+             <br>
+
+
+             <button type="submit" class="btn btn-primary">Place Bid</button>
+         </form>
+         <% } %>
+     </div>
+ 
+     
+ </div>
+ <% for ( i in comment) { %>
+
+     <div style="display: flex;justify-content: left;align-items: left;" class="shadow-none p-3 mb-5 bg-light rounded">
+       
+        <div style="display: inline-block; border: 1px;">
+          
+          <h5>Comment:  <%= comment[i].comments %></h5>
+
+          <h6>Commented By: <%= comment[i].User.username %></h6>    
+     
+       
+     <form action="/deletecomment" method="POST">
+          <input type="hidden" name="comment_id" value="<%=comment[i]._id %>">
+         
+         
+        <input type="hidden" name="commentTitle" value="<%= comment[i].List.iteme %>">
+          <input type="hidden" name="commetUser" value="<%= comment[i].User.username %>">
+           
+            <button type="submit" class="btn btn-primary" type="submitted">Delete Comment</button>
+         
+        </form>
+   
+        </div>
+     
+         
+       
+    </div>
+    <% } %>
+  
+    <% for (var i = 0; i < itemes.length; i++) { %>
+
+    <div style="display: flex;justify-content: center;align-items: center; ">
+        <form action="http://localhost:3012/Comment" method="POST">
+    <textarea class="form-control"name="comment2"></textarea>
+   
+    <input type="hidden" name="commenttitle" value="<%= itemes[i].iteme %>"><br>
+    <button type="submit" class="btn btn-info" style="margin-left: 39px;">Send Comment</button>
+ 
+</form>
+</div>
+
+
+
+<div style="display: flex;justify-content: right;align-items: right; ">
+
+    <form action="/close" method="POST" style="Display:left">
+        
+
+<input type="hidden" name="title" value="<%= itemes[i].iteme %>">
+
+<input type="hidden" name="username" value="<%= itemes[i].User.username %>">
+    <button type="submit" class="btn btn-dark">Close Auction</button>
+
+    </form>
+    <% } %>
+</div>
+</body>
+</html> 
